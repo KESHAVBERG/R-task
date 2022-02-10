@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -8,6 +10,35 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Stack mainStack(
+      String imgPath, String userName, String Description, String hastags) {
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          height: 450,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              color: Colors.indigoAccent,
+              image: DecorationImage(
+                  fit: BoxFit.cover, image: AssetImage(imgPath))),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          width: MediaQuery.of(context).size.width,
+          color: Colors.black.withOpacity(0.3),
+          height: 450,
+        ),
+        Buttons(),
+        Details(
+          userName: userName,
+          description: Description,
+          hastags: hastags,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,43 +67,15 @@ class _HomeState extends State<Home> {
                   color: Colors.black.withOpacity(0.3),
                   height: 450,
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(270, 70, 20, 70),
-                  height: 300,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.white.withOpacity(0.5),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.favorite_border,
-                            size: 35,
-                            color: Colors.grey[300],
-                          )),
-                      IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.messenger_outlined,
-                            size: 35,
-                            color: Colors.grey[300],
-                          )),
-                      Transform.rotate(
-                        angle: -45,
-                        child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.send,
-                              size: 35,
-                              color: Colors.grey[300],
-                            )),
-                      ),
-                    ],
-                  ),
-                )
+                Buttons(),
+                Details(
+                  userName: 'SRKESHav',
+                  description: "blah blah",
+                  hastags: 'gog',
+                ),
               ],
             ),
+            mainStack('img/img2.jpg', 'SRK', "Bad and good", "#bad"),
           ],
         ),
       ),
@@ -136,6 +139,127 @@ class Header extends StatelessWidget {
           Icon(
             Icons.notifications_none_outlined,
             size: 30,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Buttons extends StatelessWidget {
+  const Buttons({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(280, 60, 20, 70),
+      height: 270,
+      width: MediaQuery.of(context).size.width,
+      color: Colors.white.withOpacity(0.5),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.4),
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.favorite,
+                  size: 35,
+                  color: Colors.white,
+                )),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.4),
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.messenger_outlined,
+                  size: 35,
+                  color: Colors.white,
+                )),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.4),
+              shape: BoxShape.circle,
+            ),
+            child: Transform.rotate(
+              angle: -45,
+              child: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.send,
+                    size: 35,
+                    color: Colors.white,
+                  )),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Details extends StatelessWidget {
+  const Details(
+      {Key? key,
+      required this.userName,
+      required this.description,
+      required this.hastags})
+      : super(key: key);
+  final String userName, description, hastags;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 35),
+      height: 130,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.fromLTRB(0, 330, 0, 0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 60,
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              children: [
+                Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      color: Colors.green, shape: BoxShape.circle),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  userName,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 20,
+                  ),
+                )
+              ],
+            ),
+          ),
+          Text(
+            description,
+            style: TextStyle(
+                color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
+          ),
+          Text(
+            hastags,
+            style: TextStyle(color: Colors.white, fontSize: 15),
           ),
         ],
       ),
