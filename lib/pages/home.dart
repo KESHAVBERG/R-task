@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
             mainStack(
                 'img/img2.jpg', 'SRK', "Bad and good", "#bad", 'img/img1.jpg'),
             mainStack(
-                'img/img1.jpg', 'SRK', "Bad and good", "#bad", 'img/img2.jpg'),
+                'img/img1.jpg', 'SRK', "Badgood", "#bad #2022", 'img/img2.jpg'),
           ],
         ),
       ),
