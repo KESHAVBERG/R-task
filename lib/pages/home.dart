@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import 'details.dart';
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -10,8 +12,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Stack mainStack(
-      String imgPath, String userName, String Description, String hastags) {
+  Stack mainStack(String imgPath, String userName, String Description,
+      String hastags, String profilePic) {
     return Stack(
       children: [
         Container(
@@ -30,10 +32,24 @@ class _HomeState extends State<Home> {
           height: 450,
         ),
         Buttons(),
-        Details(
-          userName: userName,
-          description: Description,
-          hastags: hastags,
+        InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailsPage(
+                        PostPic: imgPath,
+                        profilePic: profilePic,
+                        userName: userName,
+                        description: Description,
+                        hastags: hastags)));
+          },
+          child: Details(
+            userName: userName,
+            description: Description,
+            hastags: hastags,
+            priflePic: profilePic,
+          ),
         ),
       ],
     );
@@ -49,33 +65,10 @@ class _HomeState extends State<Home> {
         child: ListView(
           children: [
             Header(),
-            Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  height: 450,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: const BoxDecoration(
-                      color: Colors.indigoAccent,
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage('img/img1.jpg'))),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.black.withOpacity(0.3),
-                  height: 450,
-                ),
-                Buttons(),
-                Details(
-                  userName: 'SRKESHav',
-                  description: "blah blah",
-                  hastags: 'gog',
-                ),
-              ],
-            ),
-            mainStack('img/img2.jpg', 'SRK', "Bad and good", "#bad"),
+            mainStack(
+                'img/img2.jpg', 'SRK', "Bad and good", "#bad", 'img/img1.jpg'),
+            mainStack(
+                'img/img1.jpg', 'SRK', "Bad and good", "#bad", 'img/img2.jpg'),
           ],
         ),
       ),
@@ -212,9 +205,10 @@ class Details extends StatelessWidget {
       {Key? key,
       required this.userName,
       required this.description,
-      required this.hastags})
+      required this.hastags,
+      required this.priflePic})
       : super(key: key);
-  final String userName, description, hastags;
+  final String userName, description, hastags, priflePic;
 
   @override
   Widget build(BuildContext context) {
@@ -236,7 +230,10 @@ class Details extends StatelessWidget {
                   height: 50,
                   width: 50,
                   decoration: BoxDecoration(
-                      color: Colors.green, shape: BoxShape.circle),
+                      image: DecorationImage(
+                          fit: BoxFit.fill, image: AssetImage(priflePic)),
+                      color: Colors.green,
+                      shape: BoxShape.circle),
                 ),
                 SizedBox(
                   width: 10,
