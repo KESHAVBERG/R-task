@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
 import 'details.dart';
 
 class Home extends StatefulWidget {
@@ -12,8 +13,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Stack mainStack(String imgPath, String userName, String Description,
-      String hastags, String profilePic) {
+  Stack mainStack(String postId, String imgPath, String userName,
+      String Description, String hastags, String profilePic) {
     return Stack(
       children: [
         Container(
@@ -31,18 +32,20 @@ class _HomeState extends State<Home> {
           color: Colors.black.withOpacity(0.3),
           height: 450,
         ),
-        Buttons(),
+        Buttons(isLiked: Constant.liked.contains(postId),),
         InkWell(
           onTap: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => DetailsPage(
-                        PostPic: imgPath,
-                        profilePic: profilePic,
-                        userName: userName,
-                        description: Description,
-                        hastags: hastags)));
+                          PostPic: imgPath,
+                          profilePic: profilePic,
+                          userName: userName,
+                          description: Description,
+                          hastags: hastags,
+                          postid: postId,
+                        )));
           },
           child: Details(
             userName: userName,
@@ -65,10 +68,10 @@ class _HomeState extends State<Home> {
         child: ListView(
           children: [
             Header(),
-            mainStack(
-                'img/img2.jpg', 'SRK', "Bad and good", "#bad", 'img/img1.jpg'),
-            mainStack(
-                'img/img1.jpg', 'SRK', "Badgood", "#bad #2022", 'img/img2.jpg'),
+            mainStack("abcdefg", 'img/img2.jpg', 'SRK', "Bad and good", "#bad",
+                'img/img1.jpg'),
+            mainStack("opqrst", 'img/img1.jpg', 'SRK', "Badgood", "#bad #2022",
+                'img/img2.jpg'),
           ],
         ),
       ),
@@ -78,6 +81,7 @@ class _HomeState extends State<Home> {
 
 class Header extends StatelessWidget {
   const Header({Key? key}) : super(key: key);
+  
 
   @override
   Widget build(BuildContext context) {
@@ -139,9 +143,14 @@ class Header extends StatelessWidget {
   }
 }
 
-class Buttons extends StatelessWidget {
-  const Buttons({Key? key}) : super(key: key);
+class Buttons extends StatefulWidget {
+  const Buttons({Key? key, required this.isLiked}) : super(key: key);
+  final bool isLiked;
+  @override
+  State<Buttons> createState() => _ButtonsState();
+}
 
+class _ButtonsState extends State<Buttons> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -162,7 +171,7 @@ class Buttons extends StatelessWidget {
                 icon: Icon(
                   Icons.favorite,
                   size: 35,
-                  color: Colors.white,
+                  color:widget.isLiked?Colors.red:Colors.white,
                 )),
           ),
           Container(

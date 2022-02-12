@@ -2,8 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
+
 class DetailsPage extends StatefulWidget {
-  final String PostPic, profilePic, userName, description, hastags;
+  final String PostPic, profilePic, userName, description, hastags, postid;
 
   const DetailsPage(
       {Key? key,
@@ -11,7 +13,8 @@ class DetailsPage extends StatefulWidget {
       required this.profilePic,
       required this.userName,
       required this.description,
-      required this.hastags})
+      required this.hastags,
+      required this.postid})
       : super(key: key);
 
   @override
@@ -33,7 +36,10 @@ class _DetailsPageState extends State<DetailsPage> {
                     fit: BoxFit.fill, image: AssetImage(widget.PostPic))),
           ),
           detailsClassForView(
-              userName: widget.userName, profilePicPath: widget.profilePic),
+            userName: widget.userName,
+            profilePicPath: widget.profilePic,
+            postId: widget.postid,
+          ),
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -154,9 +160,12 @@ class _DetailsPageState extends State<DetailsPage> {
 
 class detailsClassForView extends StatelessWidget {
   const detailsClassForView(
-      {Key? key, required this.userName, required this.profilePicPath})
+      {Key? key,
+      required this.userName,
+      required this.profilePicPath,
+      required this.postId})
       : super(key: key);
-  final String userName, profilePicPath;
+  final String userName, profilePicPath, postId;
 
   @override
   Widget build(BuildContext context) {
@@ -192,12 +201,24 @@ class detailsClassForView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 0),
             child: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.favorite_border,
-                size: 25,
-                color: Colors.white,
-              ),
+              onPressed: () {
+                if (Constant.liked.contains(postId)) {
+                  Constant.liked.remove(postId);
+                } else {
+                  Constant.liked.add(postId);
+                }
+              },
+              icon: Constant.liked.contains(postId)
+                  ? Icon(
+                      Icons.favorite,
+                      size: 25,
+                      color: Colors.red,
+                    )
+                  : Icon(
+                      Icons.favorite_border,
+                      size: 25,
+                      color: Colors.white,
+                    ),
             ),
           ),
           Padding(
